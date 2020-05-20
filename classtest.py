@@ -1,8 +1,5 @@
-"""
+""" В файле реализован класс для тестирования последовательностей на нормальнность TestDistrib """
 
- В файле реализован класс для тестирования последовательностей на нормальнность TestDistrib
-
-"""
 from matplotlib import pyplot as plt
 from scipy import stats
 import sys
@@ -15,11 +12,11 @@ import statistics as st
 class TestDistrib(object):
     """ Класс реализует методы предназначенные для тестирования последовательности на нормальность """
 
-    def __init__(self, filename, distrib="norm"):
+    def __init__(self, fileread, distrib):
         """ Конструктор """
 
         try:
-            r_file = open(filename)
+            r_file = open(fileread)
             self.data = list(map(float, r_file.read().splitlines()[:100]))
             self.name_distrib = distrib
         except FileNotFoundError as error:
@@ -74,7 +71,4 @@ class TestDistrib(object):
 
 
 if __name__ == "__main__":
-    test_normal = TestDistrib("normal.txt")
-    test_normal.hist
-    test_normal.qqplot
-    test_normal.tests_on_normal
+    print(TestDistrib.__doc__)
