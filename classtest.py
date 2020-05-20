@@ -12,13 +12,14 @@ import statistics as st
 class TestDistrib(object):
     """ Класс реализует методы предназначенные для тестирования последовательности на нормальность """
 
-    def __init__(self, fileread, distrib):
+    def __init__(self, **kwargs):
         """ Конструктор """
 
         try:
-            r_file = open(fileread)
+            r_file = open(kwargs['fileread'])
             self.data = list(map(float, r_file.read().splitlines()[:100]))
-            self.name_distrib = distrib
+            self.name_distrib = kwargs['distrib']
+            self.folderwrite = kwargs['folderwrite']
         except FileNotFoundError as error:
             print(error)
             sys.exit()
@@ -36,7 +37,7 @@ class TestDistrib(object):
         sb.set()
         sb.distplot(self.data)
         plt.title("Гистограмма анализируемых данных")
-        plt.savefig("result/hist.png")
+        plt.savefig("%shist.png" % (self.folderwrite))
 
     @property
     def qqplot(self):
@@ -46,7 +47,7 @@ class TestDistrib(object):
         sb.set()
         stats.probplot(self.data, plot=plt, dist=self.name_distrib)
         plt.title("Квантиль график для %s" % (self.name_distrib))
-        plt.savefig("result/qqplot.png")
+        plt.savefig("%sqqplot.png" % (self.folderwrite))
 
     @property
     def tests_on_normal(self):
@@ -57,7 +58,8 @@ class TestDistrib(object):
         _param_data = pd.DataFrame([
             [st.mean(self.data), st.variance(self.data, _mean)]],
             columns=["Мат.ожидание", "Дисперсия"])
-        _param_data.to_excel("result/param_data.xls", encoding="utf-8")
+        _param_data.to_excel("%sparam_data.xls" %
+                             (self.folderwrite), encoding="utf-8")
 
         _w_nt, _p_value_nt = stats.normaltest(self.data)
         _w_st, _p_value_st = stats.shapiro(self.data)
@@ -67,7 +69,8 @@ class TestDistrib(object):
             ["Shapiro-Wilk", _w_st, _p_value_st],
             ["Kolmogorov-Smirnov", _w_kt, _p_value_kt]],
             columns=["Name", "Test_statistic", "P_value"])
-        _result_tests.to_excel("result/test_result.xls", encoding="utf-8")
+        _result_tests.to_excel("%stest_result.xls" %
+                               (self.folderwrite), encoding="utf-8")
 
 
 if __name__ == "__main__":
