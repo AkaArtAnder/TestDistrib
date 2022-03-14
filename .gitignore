@@ -1,4 +1,5 @@
 .vscode/
 __pycache__
-result/
+result/*
+env
 *.txt

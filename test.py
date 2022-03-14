@@ -26,6 +26,7 @@ if __name__ == "__main__":
     test = TestDistrib(fileread=str(namespace.fileread),
                        folderwrite=str(namespace.folderwrite),
                        distrib=namespace.name)
+    
     test.qqplot
     test.hist
     test.tests_on_normal
